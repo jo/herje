@@ -12,12 +12,20 @@ test("TF", function() {
 
 test("Simple templates", function() {
   equal(Herje('hello'), 'hello', 'hello');
-  equal(Herje(['h1', 'hello']).toString(), '<h1>hello</h1>', 'h1 hello');
+  equal(Herje(['h1', 'hello']), '<h1>hello</h1>', 'h1 hello');
   equal(Herje(['h1', ['a', 'hello']]), '<h1><a>hello</a></h1>', 'h1 a hello');
 });
 
+test("escaping", function() {
+  equal(Herje('>').toString(), '&gt;', '>');
+  equal(Herje('<').toString(), '&lt;', '<');
+  equal(Herje('&').toString(), '&amp;', '&');
+  equal(Herje('"').toString(), '&quot;', '"');
+  equal(Herje(['h1', '<hello>']).toString(), '<h1>&lt;hello&gt;</h1>', 'h1 <hello>');
+});
+
 test("Templates with many children", function() {
-  equal(Herje(['h1', ['a', 'hello'], ['a', 'world!']]).toString(), '<h1><a>hello</a><a>world!</a></h1>', 'h1 a hello a world!');
+  equal(Herje(['h1', ['a', 'hello'], ['a', 'world!']]), '<h1><a>hello</a><a>world!</a></h1>', 'h1 a hello a world!');
 });
 
 test("Templates with attributes", function() {
@@ -52,7 +60,7 @@ test("Level three template modified by callback", function() {
     }
     return node;
   }
-  equal(Herje(['h1', ['a', 'hello']], callback).toString(), '<h1><a>hello01</a></h1>', 'hello with callback');
+  equal(Herje(['h1', ['a', 'hello']], callback), '<h1><a>hello01</a></h1>', 'hello with callback');
 });
 
 // lock out node from dom stuff
@@ -182,5 +190,5 @@ test("Colorful table example from http://www.jsonml.org/", function() {
     ]
   ];
   var html = '<table class="MyTable" style="background-color:yellow"><tr><td class="MyTD" style="border:1px solid black">#550758</td><td class="MyTD" style="background-color:red">Example text here</td></tr><tr><td class="MyTD" style="border:1px solid black">#993101</td><td class="MyTD" style="background-color:green">127624015</td></tr><tr><td class="MyTD" style="border:1px solid black">#E33D87</td><td class="MyTD" style="background-color:blue"> <span style="background-color:maroon">©</span> </td></tr></table>';
-  equal(Herje(template).toString(), html);
+  equal(Herje(template), html);
 });

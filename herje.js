@@ -27,7 +27,11 @@ var Herje = (function() {
         }
         
         if (!node.tagName) {
-          return node.elements;
+          return node.elements && node.elements
+            .replace(/&/g, "&amp;")
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
         }
 
         var attributesString = node.attributes && Object.keys(node.attributes).map(function(key) {

@@ -5,6 +5,11 @@ if (typeof module !== undefined && module.exports) {
   qunit = QUnit.module;
 }
 
+test("TF", function() {
+  equal(Herje(['h1', ['a', { 'href': 'http:die-tf.de' }, 'TF']]),
+    '<h1><a href="http:die-tf.de">TF</a></h1>', 'h1 a href=http:die-tf.de TF');
+});
+
 test("Simple templates", function() {
   equal(Herje('hello'), 'hello', 'hello');
   equal(Herje(['h1', 'hello']).toString(), '<h1>hello</h1>', 'h1 hello');

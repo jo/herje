@@ -67,27 +67,3 @@ Usage
       // manipulate each node
     });
 
-    // filter body ul nodes,
-    // return only the found ul nodes
-    // (currently not suppoerted)
-    herje(template, 'body ul', function(ul) {
-      // manipulate the ul node
-    });
-
-    // nested chaining
-    // (currently not suppoerted)
-    herje(template, 'body ul', function(ul) {
-      // manipulate the ul node
-    })
-    .each('li', function(li) {
-      // manipulate the nested li node
-    });
-
-    // filter and return entire document
-    // (currently not suppoerted)
-    herje(template, 'body ul', function(ul) {
-      // manipulate the ul node
-    })
-    .all()
-    
-

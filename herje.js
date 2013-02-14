@@ -3,7 +3,7 @@
 // (c) 2013 Johannes J. Schmidt, TF
 // MIT licensed
 var Herje = (function() {
-  function each(template, selector, callback) {
+  function each(template, callback) {
     var node = {
       elements: template
     };
@@ -19,9 +19,9 @@ var Herje = (function() {
     return callback(node);
   }
 
-  function toString(template, selector, callback) {
+  function toString(template, callback) {
     return function() {
-      return each(template, selector, function(node) {
+      return each(template, function(node) {
         if (typeof callback === 'function') {
           node = callback(node);
         }
@@ -29,36 +29,56 @@ var Herje = (function() {
         if (!node.tagName) {
           return node.elements;
         }
-        
+
         var attributesString = node.attributes && Object.keys(node.attributes).map(function(key) {
           return key + '="' + node.attributes[key] + '"';
         }).join(' ');
 
         return [
           '<' + node.tagName + (attributesString ? ' ' + attributesString : '') + '>',
-          node.elements.length ? node.elements.map(function(t) { return toString(t, selector, callback)() }).join('') : '',
+          node.elements.length ? node.elements.map(function(t) { return toString(t, callback)() }).join('') : '',
           '</' + node.tagName + '>'
         ].join('');
       })
     }
   }
 
-  // TODO:
-  // * selector
-  // * all
-  // * appendTo
-  // * each
-  return function(template, selector, callback) {
-    if (typeof selector === 'function') {
-      callback = selector;
-      selector = null;
+  function appendTo(template, callback) {
+    return function(element) {
+      return each(template, function(node) {
+        if (typeof callback === 'function') {
+          node = callback(node);
+        }
+
+        if (!node.tagName) {
+          return element.innerHTML = node.elements;
+        }
+
+        var el = document.createElement(node.tagName);
+        if (node.attributes) {
+          for (var key in node.attributes) {
+            el.setAttribute(key, node.attributes[key]);
+          }
+        }
+        node.elements.forEach(function(t) {
+          appendTo(t, callback)(el);
+        });
+
+        element.appendChild(el);
+      })
+    }
+  }
+
+  return function(template, callback) {
+    if (typeof template === 'string') {
+      return {
+        toString: toString(template, callback),
+        appendTo: appendTo(template, callback)
+      };
     }
 
-    if (callback && typeof template === 'string') {
-      template = callback({elements: template}).elements;
-    }
-
-    template.toString = toString(template, selector, callback);
+    template.toString = toString(template, callback);
+    template.appendTo = appendTo(template, callback);
 
     return template;
   }

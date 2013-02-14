@@ -5,22 +5,22 @@ if (typeof module !== undefined && module.exports) {
   qunit = QUnit.module;
 }
 
-test("Render simple templates", function() {
+test("Simple templates", function() {
   equal(Herje('hello'), 'hello', 'hello');
   equal(Herje(['h1', 'hello']).toString(), '<h1>hello</h1>', 'h1 hello');
   equal(Herje(['h1', ['a', 'hello']]), '<h1><a>hello</a></h1>', 'h1 a hello');
 });
 
-test("Render templates with many children", function() {
+test("Templates with many children", function() {
   equal(Herje(['h1', ['a', 'hello'], ['a', 'world!']]).toString(), '<h1><a>hello</a><a>world!</a></h1>', 'h1 a hello a world!');
 });
 
-test("Render templates with attributes", function() {
+test("Templates with attributes", function() {
   equal(Herje(['h1', { 'class': 'hello' }, 'hello']), '<h1 class="hello">hello</h1>', 'h1 class=hello hello');
   equal(Herje(['h1', ['a', { 'href': '/' }, 'hello']]), '<h1><a href="/">hello</a></h1>', 'h1 a href=/ hello');
 });
 
-test("Render Bulleted List Example from http://www.jsonml.org/", function() {
+test("Bulleted list example from http://www.jsonml.org/", function() {
   var template = [
     "ul",
     [
@@ -54,7 +54,7 @@ test("Render Bulleted List Example from http://www.jsonml.org/", function() {
   equal(Herje(template), html);
 });
 
-test("Render level one template modified by callback", function() {
+test("Level one template modified by callback", function() {
   function callback(node) {
     if (typeof node.elements === 'string') {
       node.elements += '01';
@@ -64,7 +64,7 @@ test("Render level one template modified by callback", function() {
   equal(Herje('hello', callback), 'hello01', 'hello with callback');
 });
 
-test("Render level two template modified by callback", function() {
+test("Level two template modified by callback", function() {
   function callback(node) {
     if (typeof node.elements === 'string') {
       node.elements += '01';
@@ -74,7 +74,7 @@ test("Render level two template modified by callback", function() {
   equal(Herje(['h1', 'hello'], callback), '<h1>hello01</h1>', 'hello with callback');
 });
 
-test("Render level three template modified by callback", function() {
+test("Level three template modified by callback", function() {
   function callback(node) {
     if (typeof node.elements === 'string') {
       node.elements += '01';
@@ -82,5 +82,21 @@ test("Render level three template modified by callback", function() {
     return node;
   }
   equal(Herje(['h1', ['a', 'hello']], callback).toString(), '<h1><a>hello01</a></h1>', 'hello with callback');
+});
+
+test("Append string to element", function() {
+  var element = document.createElement('div');
+
+  Herje('hello').appendTo(element);
+
+  equal(element.innerHTML, 'hello', 'hello');
+});
+
+test("Append element to element", function() {
+  var element = document.createElement('div');
+
+  Herje(['h1', 'hello']).appendTo(element);
+
+  equal(element.innerHTML, '<h1>hello</h1>', 'hello');
 });
 

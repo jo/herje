@@ -1,0 +1,12 @@
+{
+  "name": "herje",
+  "description": "Make HTML out of JSON",
+  "version": "0.0.1",
+  "author": "Johannes J. Schmidt <schmidt@netzmerk.com>",
+  "devDependencies": {
+    "qunit": "*"
+  },
+  "scripts": {
+    "test": "qunit -c herje.js -t test/test.*"
+  }
+}

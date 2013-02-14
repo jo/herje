@@ -84,19 +84,21 @@ test("Level three template modified by callback", function() {
   equal(Herje(['h1', ['a', 'hello']], callback).toString(), '<h1><a>hello01</a></h1>', 'hello with callback');
 });
 
-test("Append string to element", function() {
-  var element = document.createElement('div');
+// lock out node from dom stuff
+if (typeof document !== 'undefined') {
+  test("Append string to element", function() {
+    var element = document.createElement('div');
 
-  Herje('hello').appendTo(element);
+    Herje('hello').appendTo(element);
 
-  equal(element.innerHTML, 'hello', 'hello');
-});
+    equal(element.innerHTML, 'hello', 'hello');
+  });
 
-test("Append element to element", function() {
-  var element = document.createElement('div');
+  test("Append element to element", function() {
+    var element = document.createElement('div');
 
-  Herje(['h1', 'hello']).appendTo(element);
+    Herje(['h1', 'hello']).appendTo(element);
 
-  equal(element.innerHTML, '<h1>hello</h1>', 'hello');
-});
-
+    equal(element.innerHTML, '<h1>hello</h1>', 'hello');
+  });
+}

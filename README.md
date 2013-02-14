@@ -13,14 +13,14 @@ into
     <h1><a href="http://die-tf.de">TF</a></h1>
 
 
-See http://www.jsonml.org/
+Refer to http://www.jsonml.org/
 
 
 Usage
 -----
 
     // render to string
-    bodyjson(template).toString();
+    Herje(template).toString();
 
     // append to dom node
     Herje(template).appendTo(document.getElementById('main'));

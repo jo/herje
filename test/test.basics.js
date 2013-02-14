@@ -25,40 +25,6 @@ test("Templates with attributes", function() {
   equal(Herje(['h1', ['a', { 'href': '/' }, 'hello']]), '<h1><a href="/">hello</a></h1>', 'h1 a href=/ hello');
 });
 
-test("Bulleted list example from http://www.jsonml.org/", function() {
-  var template = [
-    "ul",
-    [
-      "li",
-      {
-        "style": "color:red"
-      },
-      "First Item"
-    ],
-    [
-      "li",
-      {
-        "title": "Some hover text.",
-        "style": "color:green"
-      },
-      "Second Item"
-    ],
-    [
-      "li",
-      [
-        "span",
-        {
-          "class": "code-example-third"
-        },
-        "Third"
-      ],
-      " Item"
-    ]
-  ];
-  var html = '<ul><li style="color:red">First Item</li><li title="Some hover text." style="color:green">Second Item</li><li><span class="code-example-third">Third</span> Item</li></ul>';
-  equal(Herje(template), html);
-});
-
 test("Level one template modified by callback", function() {
   function callback(node) {
     if (typeof node.elements === 'string') {
@@ -107,3 +73,114 @@ if (typeof document !== 'undefined') {
     equal(element.innerHTML, '<h1>hello</h1>', 'hello');
   });
 }
+
+test("Bulleted list example from http://www.jsonml.org/", function() {
+  var template = [
+    "ul",
+    [
+      "li",
+      {
+        "style": "color:red"
+      },
+      "First Item"
+    ],
+    [
+      "li",
+      {
+        "title": "Some hover text.",
+        "style": "color:green"
+      },
+      "Second Item"
+    ],
+    [
+      "li",
+      [
+        "span",
+        {
+          "class": "code-example-third"
+        },
+        "Third"
+      ],
+      " Item"
+    ]
+  ];
+  var html = '<ul><li style="color:red">First Item</li><li title="Some hover text." style="color:green">Second Item</li><li><span class="code-example-third">Third</span> Item</li></ul>';
+  equal(Herje(template), html);
+});
+
+test("Colorful table example from http://www.jsonml.org/", function() {
+  var template = [
+    "table",
+    {
+      "class": "MyTable",
+      "style": "background-color:yellow"
+    },
+    [
+      "tr",
+      [
+        "td",
+        {
+          "class": "MyTD",
+          "style": "border:1px solid black"
+        },
+        "#550758"
+      ],
+      [
+        "td",
+        {
+          "class": "MyTD",
+          "style": "background-color:red"
+        },
+        "Example text here"
+      ]
+    ],
+    [
+      "tr",
+      [
+        "td",
+        {
+          "class": "MyTD",
+          "style": "border:1px solid black"
+        },
+        "#993101"
+      ],
+      [
+        "td",
+        {
+          "class": "MyTD",
+          "style": "background-color:green"
+        },
+        "127624015"
+      ]
+    ],
+    [
+      "tr",
+      [
+        "td",
+        {
+          "class": "MyTD",
+          "style": "border:1px solid black"
+        },
+        "#E33D87"
+      ],
+      [
+        "td",
+        {
+          "class": "MyTD",
+          "style": "background-color:blue"
+        },
+        " ",
+        [
+          "span",
+          {
+            "style": "background-color:maroon"
+          },
+          "©"
+        ],
+        " "
+      ]
+    ]
+  ];
+  var html = '<table class="MyTable" style="background-color:yellow"><tr><td class="MyTD" style="border:1px solid black">#550758</td><td class="MyTD" style="background-color:red">Example text here</td></tr><tr><td class="MyTD" style="border:1px solid black">#993101</td><td class="MyTD" style="background-color:green">127624015</td></tr><tr><td class="MyTD" style="border:1px solid black">#E33D87</td><td class="MyTD" style="background-color:blue"> <span style="background-color:maroon">©</span> </td></tr></table>';
+  equal(Herje(template).toString(), html);
+});

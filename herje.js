@@ -19,6 +19,14 @@ var Herje = (function() {
     return callback(node);
   }
 
+  function h(string) {
+    return string && string
+      .replace(/&/g, "&amp;")
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+  }
+
   function toString(template, callback) {
     return function() {
       return each(template, function(node) {
@@ -27,15 +35,11 @@ var Herje = (function() {
         }
         
         if (!node.tagName) {
-          return node.elements && node.elements
-            .replace(/&/g, "&amp;")
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;');
+          return h(node.elements);
         }
 
         var attributesString = node.attributes && Object.keys(node.attributes).map(function(key) {
-          return key + '="' + node.attributes[key] + '"';
+          return key + '="' + h(node.attributes[key]) + '"';
         }).join(' ');
 
         return [

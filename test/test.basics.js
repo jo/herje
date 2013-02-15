@@ -16,12 +16,19 @@ test("Simple templates", function() {
   equal(Herje(['h1', ['a', 'hello']]), '<h1><a>hello</a></h1>', 'h1 a hello');
 });
 
-test("escaping", function() {
-  equal(Herje('>').toString(), '&gt;', '>');
-  equal(Herje('<').toString(), '&lt;', '<');
-  equal(Herje('&').toString(), '&amp;', '&');
-  equal(Herje('"').toString(), '&quot;', '"');
-  equal(Herje(['h1', '<hello>']).toString(), '<h1>&lt;hello&gt;</h1>', 'h1 <hello>');
+test("escaping inner html", function() {
+  equal(Herje('>'), '&gt;', '>');
+  equal(Herje('<'), '&lt;', '<');
+  equal(Herje('&'), '&amp;', '&');
+  equal(Herje('"'), '&quot;', '"');
+  equal(Herje(['h1', '<hello>']), '<h1>&lt;hello&gt;</h1>', 'h1 <hello>');
+});
+
+test("escaping attributes", function() {
+  equal(Herje(['h1', { 'class': '>' }, 'hello']), '<h1 class="&gt;">hello</h1>', '>');
+  equal(Herje(['h1', { 'class': '<' }, 'hello']), '<h1 class="&lt;">hello</h1>', '<');
+  equal(Herje(['h1', { 'class': '&' }, 'hello']), '<h1 class="&amp;">hello</h1>', '&');
+  equal(Herje(['h1', { 'class': '"' }, 'hello']), '<h1 class="&quot;">hello</h1>', '"');
 });
 
 test("Templates with many children", function() {
